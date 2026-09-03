@@ -1,0 +1,132 @@
+:root {
+  --primary: #d88c9a;
+  --primary-dark: #c06b7a;
+  --primary-contrast: #ffffff;
+  --bg: #fdf7f5;
+  --surface: #ffffff;
+  --border: #ecdfdc;
+  --text: #3a2e2e;
+  --text-muted: #8a7a78;
+  --text-faint: #cdbfbc;
+  --danger: #c0564b;
+  --success: #4a8a6f;
+
+  color-scheme: light;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+a {
+  color: var(--primary-dark);
+}
+
+.btn {
+  border: none;
+  border-radius: 12px;
+  padding: 0.85rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--primary);
+  color: var(--primary-contrast);
+  width: 100%;
+}
+
+.btn:active {
+  background: var(--primary-dark);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn-danger {
+  background: var(--danger);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.field input, .field textarea {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 0.9rem;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.field input:focus, .field textarea:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1rem 1.1rem 2rem;
+  flex: 1;
+}
+
+.error-text {
+  color: var(--danger);
+  font-size: 0.9rem;
+}
+
+.success-text {
+  color: var(--success);
+  font-size: 0.9rem;
+}

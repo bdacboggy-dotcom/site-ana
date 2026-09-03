@@ -1,0 +1,19 @@
+## .NET
+backend/**/bin/
+backend/**/obj/
+backend/**/*.db
+backend/**/*.db-shm
+backend/**/*.db-wal
+backend/**/appsettings.Production.json
+backend/**/appsettings.Development.json
+
+## Node / React
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
+## OS / editors
+.vs/
+.vscode/
+*.user
