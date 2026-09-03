@@ -25,6 +25,13 @@ public class AppDbContext : DbContext
             .HasForeignKey(a => a.ServiceId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        // Salonul are un singur fus orar (ora locală a saloanelor) — stocăm ora
+        // "de perete" ca atare, fără conversie/asociere UTC (Postgres altfel
+        // cere DateTime.Kind = Utc pentru coloane "timestamp with time zone").
+        modelBuilder.Entity<Appointment>().Property(a => a.StartsAt).HasColumnType("timestamp without time zone");
+        modelBuilder.Entity<Appointment>().Property(a => a.EndsAt).HasColumnType("timestamp without time zone");
+        modelBuilder.Entity<Appointment>().Property(a => a.CreatedAt).HasColumnType("timestamp without time zone");
+
         modelBuilder.Entity<Appointment>()
             .HasIndex(a => a.ManageToken)
             .IsUnique();

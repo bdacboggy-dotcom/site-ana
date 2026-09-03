@@ -23,7 +23,7 @@ public class Appointment
 
     public AppointmentStatus Status { get; set; } = AppointmentStatus.Confirmed;
     public string? Notes { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public Guid ManageToken { get; set; } = Guid.NewGuid();
 }
