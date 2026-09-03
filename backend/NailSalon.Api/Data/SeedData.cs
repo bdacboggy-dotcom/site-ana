@@ -46,6 +46,11 @@ public static class SeedData
             }
         }
 
+        if (!await db.AppSettings.AnyAsync())
+        {
+            db.AppSettings.Add(new AppSettings { SlotGranularityMinutes = 15 });
+        }
+
         await db.SaveChangesAsync();
     }
 }

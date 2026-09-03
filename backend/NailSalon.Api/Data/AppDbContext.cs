@@ -12,6 +12,7 @@ public class AppDbContext : DbContext
     public DbSet<BlockedDate> BlockedDates => Set<BlockedDate>();
     public DbSet<Appointment> Appointments => Set<Appointment>();
     public DbSet<AdminUser> AdminUsers => Set<AdminUser>();
+    public DbSet<AppSettings> AppSettings => Set<AppSettings>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

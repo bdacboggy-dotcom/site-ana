@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getWorkingHours, updateWorkingHours } from "../../api/schedule";
+import { getSettings, updateSettings } from "../../api/settings";
 
 const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
 const DAY_LABELS = {
@@ -12,12 +13,22 @@ const DAY_LABELS = {
   6: "Sâmbătă",
 };
 
+const GRANULARITY_OPTIONS = [
+  { value: 15, label: "La 15 minute" },
+  { value: 30, label: "La 30 de minute" },
+  { value: 45, label: "La 45 de minute" },
+  { value: 60, label: "La 1 oră" },
+  { value: 90, label: "La 1 oră și jumătate" },
+  { value: 120, label: "La 2 ore" },
+];
+
 function toInputTime(timeSpanString) {
   return (timeSpanString || "10:00:00").slice(0, 5);
 }
 
 export default function AdminWorkingHoursTab() {
   const [hoursByDay, setHoursByDay] = useState({});
+  const [slotGranularity, setSlotGranularity] = useState(15);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -36,6 +47,7 @@ export default function AdminWorkingHoursTab() {
       }
       setHoursByDay(map);
     });
+    getSettings().then((s) => setSlotGranularity(s.slotGranularityMinutes));
   };
 
   useEffect(load, []);
@@ -48,15 +60,16 @@ export default function AdminWorkingHoursTab() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await Promise.all(
-        DAY_ORDER.map((day) =>
+      await Promise.all([
+        ...DAY_ORDER.map((day) =>
           updateWorkingHours(day, {
             startTime: `${hoursByDay[day].startTime}:00`,
             endTime: `${hoursByDay[day].endTime}:00`,
             isWorkingDay: hoursByDay[day].isWorkingDay,
           })
-        )
-      );
+        ),
+        updateSettings({ slotGranularityMinutes: Number(slotGranularity) }),
+      ]);
       setSaved(true);
     } finally {
       setSaving(false);
@@ -67,6 +80,24 @@ export default function AdminWorkingHoursTab() {
 
   return (
     <div>
+      <div className="card" style={{ marginBottom: "1rem" }}>
+        <div className="field" style={{ marginBottom: 0 }}>
+          <label>La ce interval pot alege clientele o oră?</label>
+          <select
+            value={slotGranularity}
+            onChange={(e) => {
+              setSaved(false);
+              setSlotGranularity(e.target.value);
+            }}
+            style={{ border: "1px solid var(--border)", borderRadius: 10, padding: "0.75rem 0.9rem", background: "var(--surface)", color: "var(--text)" }}
+          >
+            {GRANULARITY_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       <div className="card">
         {DAY_ORDER.map((day) => (
           <div key={day} className="day-row">

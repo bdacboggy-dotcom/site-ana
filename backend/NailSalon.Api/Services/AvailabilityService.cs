@@ -5,8 +5,6 @@ namespace NailSalon.Api.Services;
 
 public class AvailabilityService
 {
-    private const int SlotGranularityMinutes = 15;
-
     private readonly AppDbContext _db;
 
     public AvailabilityService(AppDbContext db)
@@ -49,6 +47,9 @@ public class AvailabilityService
                 .Select(b => (Start: b.StartTime!.Value, End: b.EndTime!.Value)))
             .ToList();
 
+        var settings = await _db.AppSettings.FirstOrDefaultAsync();
+        var slotGranularityMinutes = settings?.SlotGranularityMinutes ?? 15;
+
         var duration = TimeSpan.FromMinutes(service.DurationMinutes);
         var slots = new List<TimeSpan>();
         var now = DateTime.Now;
@@ -56,7 +57,7 @@ public class AvailabilityService
 
         for (var slotStart = workingHours.StartTime;
              slotStart + duration <= workingHours.EndTime;
-             slotStart = slotStart.Add(TimeSpan.FromMinutes(SlotGranularityMinutes)))
+             slotStart = slotStart.Add(TimeSpan.FromMinutes(slotGranularityMinutes)))
         {
             var slotEnd = slotStart + duration;
 
